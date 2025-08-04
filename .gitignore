@@ -1,0 +1,26 @@
+# Node dependencies
+/node_modules
+
+# Parcel cache
+/.parcel-cache
+
+# Build output
+/dist
+
+# Optional log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Local environment variables
+.env
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# VS Code settings (if you don't want them tracked)
+.vscode/
+
+# Sass cache (if using any temporary cache folders)
+.sass-cache/
