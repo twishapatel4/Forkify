@@ -3,7 +3,9 @@ import recipeView from './views/recipeView.js';
 import serachView from './views/serachView.js';
 import resultsView from './views/resultsView.js';
 import paginationView from './views/paginationView.js';
+import addRecipeView from './views/addRecipeView.js';
 import bookmarkView from './views/bookmarkView.js';
+
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import { async } from 'regenerator-runtime/runtime';
@@ -66,7 +68,7 @@ const controlSearch = async function () {
     //console.log(model.state.search.results);
   } catch (err) {
     recipeView.renderError();
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -95,14 +97,39 @@ const controlServings = async function (newServings) {
   recipeView.render(model.state.recipe);
 };
 
+const controlAddRecipe = async function (newRecipe) {
+  try {
+    //addRecipeView.renderSpinner();
+    await model.uploadRecipe(newRecipe);
+    console.log(model.state.recipe);
+    recipeView.render(model.state.recipe);
+    bookmarkView.render(model.state.bookmark);
+
+    //change id in url
+    window.history.pushState(null, '', `#${model.state.recipe.id}`);
+    window.history.back();
+    //addRecipeView.renderMessage();
+    //close form window
+    // setTimeout(function () {
+    //   addRecipeView.toggleclasses();
+    // }, 2500);
+  } catch (er) {
+    console.log(er);
+    addRecipeView.renderError(er.message);
+  }
+  //upload the recipe on local storage
+};
+
 const init = function () {
   recipeView.addHandlerRender(ControlRecipe);
   recipeView.addHandlerUpdateServings(controlServings);
   recipeView.addHandlerBookmark(controlBookmark);
   serachView.addHandlerRender(controlSearch);
   paginationView.addHandlerClick(controlPagination);
+  addRecipeView._addHandlerUpload(controlAddRecipe);
 };
 init();
+
 // window.addEventListener('hashchange', showRecipe);
 
 /////////////////////////////////////////////////////////////////////////////
