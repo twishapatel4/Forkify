@@ -3,6 +3,7 @@ import recipeView from './views/recipeView.js';
 import serachView from './views/serachView.js';
 import resultsView from './views/resultsView.js';
 import paginationView from './views/paginationView.js';
+import bookmarkView from './views/bookmarkView.js';
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import { async } from 'regenerator-runtime/runtime';
@@ -10,7 +11,7 @@ import { async } from 'regenerator-runtime/runtime';
 if (module) {
   module.hot.accept();
 }
-const recipeContainer = document.querySelector('.recipe');
+// const recipeContainer = document.querySelector('.recipe');
 
 const timeout = function (s) {
   return new Promise(function (_, reject) {
@@ -33,8 +34,8 @@ const ControlRecipe = async function () {
     if (!id) return;
     recipeView.renderSpinner();
     //0.Update results view to mark selected search result
-    // resultsView.update(model.getSearchResultsPage);
-
+    resultsView.render(model.getSearchResultsPage());
+    bookmarkView.render(model.state.bookmark);
     //1. Loading Recipe
     await model.loadRecipe(id);
 
@@ -70,12 +71,16 @@ const controlSearch = async function () {
 };
 
 const controlBookmark = async function () {
+  //1. add/remove bookmark
   if (!model.state.recipe.bookmarked) {
     model.addBookmark(model.state.recipe);
   } else {
     model.removeBookmark(model.state.recipe);
   }
+  //2. render recipe
   recipeView.render(model.state.recipe);
+  //3. render bookmark list
+  bookmarkView.render(model.state.bookmark);
 };
 
 // controlSearch();

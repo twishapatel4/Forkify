@@ -1,13 +1,15 @@
 import previewView from './previewView';
-//import view from './View';
-import icons from 'url:../../img/icons.svg';
-const prev = new previewView();
-class ResultView extends previewView {
-  _parentElement = document.querySelector('.results');
-  _errorMessage = 'No Recipe found for the Query';
+// const prev = new previewView();
+class bookmarkView extends previewView {
+  _parentElement = document.querySelector('.bookmarks__list');
+  _errorMessage = 'No Bookmark found';
   _message = '';
   _generateHTML() {
-    return this._data.map(result => prev.render(result, false)).join('');
+    //now these will not work
+    // return this._data.map(this._generateMarkUpPreview).join('');
+    return this._data
+      .map(bookmark => super._generateHTML.call({ _data: bookmark }))
+      .join('');
   }
   // _generateMarkUpPreview(result) {
   //   const id = window.location.hash.slice(1);
@@ -26,4 +28,5 @@ class ResultView extends previewView {
   //         </li>`;
   // }
 }
-export default new ResultView();
+export default new bookmarkView();
+//bookmarkview and the results view are similar so what we can do is have the common parent class to these views and so it willl later extend the child class
